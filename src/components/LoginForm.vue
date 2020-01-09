@@ -44,6 +44,7 @@ export default {
   methods: {
     submit(e) {
       e.preventDefault();
+      this.setLoading();
       ApiSubmit({ username: this.username, password: this.password })
         .then(() => this.setNotification(constants.NOTIFICATION_TYPE_VALID, `Congratulations ! You are now connected as ${this.username}.`))
         .catch(error => this.setNotification(constants.NOTIFICATION_TYPE_ERROR, error));
@@ -58,6 +59,7 @@ export default {
 
       // Check if username is valid 1 second after user types
       this.usernameTimeout = setTimeout(() => {
+        this.setLoading();
         ApiUsernameValidation(this.username)
           .then(() => {
             this.isUsernameValid = true;
@@ -73,6 +75,7 @@ export default {
 
       // Check if password is valid 1 second after user types
       this.passwordTimeout = setTimeout(() => {
+        this.setLoading();
         // Regex which test the length is at least 9 characters including 1 digit
         const passwordRegex = /^(?=.*\d).{9,}$/;
         const isPasswordValid = passwordRegex.test(this.password);
@@ -87,6 +90,9 @@ export default {
     resetNotification() {
       this.notification.type = null;
       this.notification.message = null;
+    },
+    setLoading() {
+      this.setNotification(constants.NOTIFICATION_TYPE_REQUESTING, 'Requesting server, please wait...');
     },
   },
 };
