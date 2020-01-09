@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="{
+  <div v-bind:class="{ notification,
     'notification__message--valid': notification.type === NOTIFICATION_TYPE_VALID,
     'notification__message--invalid': notification.type === NOTIFICATION_TYPE_ERROR,
     'notification__message--requesting': notification.type === NOTIFICATION_TYPE_REQUESTING }">
@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style scoped>
+  .notification {
+    height: 30px;
+  }
+
   .notification__message--valid {
     color: forestgreen;
   }
