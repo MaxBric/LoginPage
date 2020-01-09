@@ -66,7 +66,15 @@ export default {
             console.log(this.isUsernameValid);
             this.resetNotification();
           })
-          .catch(error => this.setNotification(constants.NOTIFICATION_TYPE_ERROR, error));
+          .catch((error) => {
+            // Error message is hardcoded but we should check for a http code or something else
+            if (error.message === 'Network error') {
+              this.validateUsername();
+              return;
+            }
+
+            this.setNotification(constants.NOTIFICATION_TYPE_ERROR, error);
+          });
       }, 1000);
     },
     validatePassword() {
@@ -117,6 +125,7 @@ export default {
     color: #41ffb4;
     margin-bottom: 10%;
     font-weight: bold;
+    font-size: 2em;
   }
 
   .loginform__input, .loginform__submit {
