@@ -1,11 +1,16 @@
 <template>
-  <form v-on:submit="submit">
-    <label for="loginform-username">Username</label>
-    <input id="loginform-username" v-model="username" type="text" placeholder="Enter username">
-    <label for="loginform-password">Password</label>
-    <input id="loginform-password" v-model="password" type="password" placeholder="Enter password">
-    <button @click="submit">Submit</button>
-    <Notification :notification="notification"/>
+  <form v-on:submit="submit" class="loginform">
+    <div class="loginform__content">
+      <header class="loginform__header">LOGIN</header>
+      <label for="loginform-username" class="loginform__label">Username</label>
+      <input id="loginform-username" class="loginform__input" v-model="username"
+             type="text" placeholder="Enter username">
+      <label for="loginform-password" class="loginform__label">Password</label>
+      <input id="loginform-password" class="loginform__input" v-model="password" type="password"
+             placeholder="Enter password">
+      <button @click="submit" class="loginform__submit">SUBMIT</button>
+      <Notification :notification="notification" class="loginform__notification"/>
+    </div>
   </form>
 </template>
 
@@ -18,9 +23,6 @@ export default {
   name: 'LoginForm',
   components: {
     Notification,
-  },
-  props: {
-    // msg: String,
   },
   data: () => ({
     username: '',
@@ -51,13 +53,13 @@ export default {
     },
     validatePassword() {
       return new Promise((resolve, reject) => {
-        // Regex which test at least the length is at least 9 characters including 1 digit
+        // Regex which test the length is at least 9 characters including 1 digit
         const passwordRegex = /^(?=.*\d).{9,}$/;
         const isPasswordValid = passwordRegex.test(this.password);
         if (isPasswordValid) {
           resolve(isPasswordValid);
         } else {
-          reject(new Error('Password Does Not Meet Requirements. \n Your password should be longer than 8 characters and contain at least one number'));
+          reject(new Error('Password does not meet requirements. Your password should be longer than 8 characters and contain at least one number'));
         }
       });
     },
@@ -65,6 +67,44 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+.loginform {
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+}
 
+.loginform__content {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 2em;
+
+  .loginform__header {
+    margin-bottom: 10%;
+    font-weight: bold;
+  }
+
+  .loginform__input, .loginform__submit {
+    border: 0;
+    height: 2em;
+    margin: 10px;
+  }
+
+  .loginform__label {
+    font-weight: bold;
+  }
+
+  .loginform__input {
+    background-color: #f1f1f1;
+  }
+
+  .loginform__submit {
+    background-color: #41ffb4;
+    color: #000000;
+    font-weight: bold;
+  }
+}
 </style>
