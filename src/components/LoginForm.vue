@@ -12,6 +12,7 @@
 <script>
 import Notification from './Notification.vue';
 import { validate as ApiUsernameValidation, submit as ApiSubmit } from '../api';
+import constants from '../constants';
 
 export default {
   name: 'LoginForm',
@@ -35,25 +36,22 @@ export default {
       ApiUsernameValidation(this.username)
         .then(() => {
           this.validatePassword()
-            .then((isPasswordValid) => {
-              console.log('isPasswordValid', isPasswordValid);
-              console.log('submit');
+            .then(() => {
               ApiSubmit({ username: this.username, password: this.password })
-                .then(() => this.setNotification('valid', 'CONNECTED !!'))
-                .catch(error => this.setNotification('error', error));
+                .then(() => this.setNotification(constants.NOTIFICATION_TYPE_VALID, `Congratulations ! You are now connected as ${this.username}.`))
+                .catch(error => this.setNotification(constants.NOTIFICATION_TYPE_ERROR, error));
             })
-            .catch(error => this.setNotification('error', error));
+            .catch(error => this.setNotification(constants.NOTIFICATION_TYPE_ERROR, error));
         })
-        .catch(error => this.setNotification('error', error));
+        .catch(error => this.setNotification(constants.NOTIFICATION_TYPE_ERROR, error));
     },
     setNotification(type, message) {
-      // this.$refs.notificationComponent.setMessage(message);
       this.notification.type = type;
       this.notification.message = message;
     },
     validatePassword() {
       return new Promise((resolve, reject) => {
-        // Regex which test at least 9 characters including 1 digit
+        // Regex which test at least the length is at least 9 characters including 1 digit
         const passwordRegex = /^(?=.*\d).{9,}$/;
         const isPasswordValid = passwordRegex.test(this.password);
         if (isPasswordValid) {
