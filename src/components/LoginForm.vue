@@ -1,0 +1,72 @@
+<template>
+  <form v-on:submit="submit">
+    <label for="loginform-username">Username</label>
+    <input id="loginform-username" v-model="username" type="text" placeholder="Enter username">
+    <label for="loginform-password">Password</label>
+    <input id="loginform-password" v-model="password" type="password" placeholder="Enter password">
+    <button @click="submit">Submit</button>
+    <Notification :notification="notification"/>
+  </form>
+</template>
+
+<script>
+import Notification from './Notification.vue';
+import { validate as ApiUsernameValidation, submit as ApiSubmit } from '../api';
+
+export default {
+  name: 'LoginForm',
+  components: {
+    Notification,
+  },
+  props: {
+    // msg: String,
+  },
+  data: () => ({
+    username: '',
+    password: '',
+    notification: {
+      type: null,
+      message: null,
+    },
+  }),
+  methods: {
+    submit(e) {
+      e.preventDefault();
+      ApiUsernameValidation(this.username)
+        .then(() => {
+          this.validatePassword()
+            .then((isPasswordValid) => {
+              console.log('isPasswordValid', isPasswordValid);
+              console.log('submit');
+              ApiSubmit({ username: this.username, password: this.password })
+                .then(() => this.setNotification('valid', 'CONNECTED !!'))
+                .catch(error => this.setNotification('error', error));
+            })
+            .catch(error => this.setNotification('error', error));
+        })
+        .catch(error => this.setNotification('error', error));
+    },
+    setNotification(type, message) {
+      // this.$refs.notificationComponent.setMessage(message);
+      this.notification.type = type;
+      this.notification.message = message;
+    },
+    validatePassword() {
+      return new Promise((resolve, reject) => {
+        // Regex which test at least 9 characters including 1 digit
+        const passwordRegex = /^(?=.*\d).{9,}$/;
+        const isPasswordValid = passwordRegex.test(this.password);
+        if (isPasswordValid) {
+          resolve(isPasswordValid);
+        } else {
+          reject(new Error('Password Does Not Meet Requirements. \n Your password should be longer than 8 characters and contain at least one number'));
+        }
+      });
+    },
+  },
+};
+</script>
+
+<style scoped>
+
+</style>
