@@ -96,7 +96,7 @@ export default {
 .loginform {
   display: flex;
   justify-content: center;
-  padding-top: 5%;
+  height: 80%;
 }
 
 .loginform__content {
@@ -135,6 +135,15 @@ export default {
 
   .loginform__submit:disabled {
     background-color: darkgrey;
+  }
+}
+
+/* A bit of responsive... */
+@media only screen and (max-width: 768px) {
+  .loginform__content {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>

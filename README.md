@@ -1,4 +1,14 @@
-# login-page
+# Login Page
+Login page example with fields verification and fake api. \
+This project uses ESLint Airbnb code style and BEM CSS naming rules.
+
+Validations (username & password) are fired 1 second after the user finished typing.
+If they are both valid, the submit button can be clicked.
+
+Enjoy :)
+
+## Requirements
+Node v12+
 
 ## Project setup
 ```
@@ -25,5 +35,13 @@ npm run test:unit
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Connect to the login page
+Open a browser and go to : http://localhost:8080/ (default port)
+
+## Features 
+* Username validation by API
+* Locally validated password
+* Submit form to API
+* Handle notifications
+

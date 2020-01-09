@@ -1,4 +1,5 @@
-// --- utilities ---------------------------------------------------------------
+// --- Utilities ---------------------------------------------------------------
+// I just put utilities on top of "api functions" because linter wanted declaration before call
 
 function randomRange(x, y) {
   return Math.floor(Math.random() * (y - x) + x);
@@ -14,11 +15,12 @@ function getMessage(value) {
   return `The user name "${value}" is already taken. Please choose another one`;
 }
 
+// --- Api functions ---------------------------------------------------------------
+
 export function validate(value) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (Math.random() < 0.8) {
-        console.log(/^(a|e|i|o|u)/.test(value));
         if (value && value.length > 8 && /^(a|e|i|o|u)/.test(value)) {
           resolve();
         } else {
